@@ -1,17 +1,24 @@
 import express, { json } from "express";
 import * as dotenv from "dotenv";
-// import test from "./api/test";
+import bodyParser from "body-parser";
+import { db } from "./config/connectDB";
 
 // setup
 dotenv.config();
+const PORT = process.env.PORT || 3000;
 const app = express();
-const PORT = process.env.PORT;
 
 // use
 app.use(json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.get("/", async (req, res) => {
-  res.json({ status: true, message: "Our node.js app works" });
+db.on("error", (err) => {
+  console.log(err);
+});
+
+db.once("open", () => {
+  console.log("connected");
 });
 
 app.listen(PORT, () => {
