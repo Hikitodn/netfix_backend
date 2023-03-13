@@ -1,6 +1,19 @@
 import mongoose from "mongoose";
+import env from "./vars";
 
-mongoose.connect(
-  "mongodb+srv://Hikito:n4UMqjy1lz6Dw4jz@netfix.0th5xg3.mongodb.net/?retryWrites=true&w=majority"
-);
-export const db = mongoose.connection;
+// mongoDB atlas URI
+const uri = env.mongo.uri;
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(uri, {
+      keepAlive: true,
+    });
+    console.log("Database connected!");
+  } catch (error) {
+    console.log(error);
+    process.exit(-1);
+  }
+};
+
+export default connectDB;
